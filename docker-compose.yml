@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  php:
+    image: php-webmarketer-sdk-8
+    build:
+      context: .
+      dockerfile: Dockerfile-8
+    volumes:
+      - .:/usr/src/app
+    command: composer install
