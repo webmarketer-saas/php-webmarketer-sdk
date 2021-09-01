@@ -1,0 +1,5 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <php>
+        <env name="WEBMARKETER_APPLICATION_CREDENTIALS" value="/usr/src/app/secrets/dev-sa.json" force="true" />
+    </php>
+</phpunit>
