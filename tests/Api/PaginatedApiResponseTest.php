@@ -12,7 +12,59 @@ class PaginatedApiResponseTest extends TestCase
     protected $endpoint_stub;
     protected $paginated_response;
 
-    protected function setUp(): void
+    public function testGetData()
+    {
+        $this->beforeTest();
+        $data = $this->paginated_response->getData();
+
+        $this->assertIsArray($data);
+        $this->assertSameSize($data, $this->payload_stub->data);
+        $this->assertInstanceOf(PlaceholderModel::class, $data[0]);
+    }
+
+    public function testGetTotal()
+    {
+        $this->beforeTest();
+        $this->assertEquals($this->payload_stub->total, $this->paginated_response->getTotal());
+    }
+
+    public function testGetPerPage()
+    {
+        $this->beforeTest();
+        $this->assertEquals($this->payload_stub->limit, $this->paginated_response->getPerPage());
+    }
+
+    public function testGetRaw()
+    {
+        $this->beforeTest();
+        $this->assertEquals($this->payload_stub, $this->paginated_response->getRaw());
+    }
+
+    public function testHasNext()
+    {
+        $this->beforeTest();
+        $this->assertFalse($this->paginated_response->hasNext());
+    }
+
+    public function testFetchNext()
+    {
+        $this->beforeTest();
+        $this->assertNull($this->paginated_response->fetchNext());
+    }
+
+    public function testPaginationIterator()
+    {
+        $this->beforeTest();
+        $iterator = $this->paginated_response->paginationIterator();
+
+        $this->assertEquals($iterator->current()->_id, $this->payload_stub->data[0]['_id']);
+        foreach ($iterator as $data) {
+            $this->assertInstanceOf(PlaceholderModel::class, $data);
+        }
+        $this->assertInstanceOf(\Generator::class, $iterator);
+    }
+
+    private function beforeTest()
     {
         $this->payload_stub = (object) [
             'count' => 3,
@@ -41,50 +93,5 @@ class PaginatedApiResponseTest extends TestCase
             ],
             $api_service_mock
         );
-    }
-
-    public function testGetData()
-    {
-        $data = $this->paginated_response->getData();
-
-        $this->assertIsArray($data);
-        $this->assertSameSize($data, $this->payload_stub->data);
-        $this->assertInstanceOf(PlaceholderModel::class, $data[0]);
-    }
-
-    public function testGetTotal()
-    {
-        $this->assertEquals($this->payload_stub->total, $this->paginated_response->getTotal());
-    }
-
-    public function testGetPerPage()
-    {
-        $this->assertEquals($this->payload_stub->limit, $this->paginated_response->getPerPage());
-    }
-
-    public function testGetRaw()
-    {
-        $this->assertEquals($this->payload_stub, $this->paginated_response->getRaw());
-    }
-
-    public function testHasNext()
-    {
-        $this->assertFalse($this->paginated_response->hasNext());
-    }
-
-    public function testFetchNext()
-    {
-        $this->assertNull($this->paginated_response->fetchNext());
-    }
-
-    public function testPaginationIterator()
-    {
-        $iterator = $this->paginated_response->paginationIterator();
-
-        $this->assertEquals($iterator->current()->_id, $this->payload_stub->data[0]['_id']);
-        foreach ($iterator as $data) {
-            $this->assertInstanceOf(PlaceholderModel::class, $data);
-        }
-        $this->assertInstanceOf(\Generator::class, $iterator);
     }
 }
