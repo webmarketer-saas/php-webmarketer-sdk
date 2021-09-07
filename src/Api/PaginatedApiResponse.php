@@ -39,13 +39,12 @@ class PaginatedApiResponse
     /**
      * get array of data model
      *
-     * @return array<array-key, T>
+     * @return array[]
      */
     public function getData()
     {
         return array_map(function ($datum) {
             $model = $this->service->getModel();
-            /** @var T */
             return call_user_func([$model, 'createFromArray'], $datum);
         }, $this->payload->data);
     }
@@ -122,6 +121,6 @@ class PaginatedApiResponse
                 yield $model;
             }
             $page = $page->fetchNext();
-        } while ($page->hasNext());
+        } while ($page && $page->hasNext());
     }
 }

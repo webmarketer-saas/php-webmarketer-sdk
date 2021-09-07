@@ -29,10 +29,7 @@ class JWT
      */
     public function isExpired()
     {
-        if (property_exists($this->payload, 'exp')) {
-            return time() > $this->payload->exp;
-        }
-        return false;
+        return property_exists($this->payload, 'exp') && time() > $this->payload->exp;
     }
 
     public function __toString()

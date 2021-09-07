@@ -3,6 +3,7 @@
 namespace Webmarketer\Api;
 
 use Webmarketer\Exception\ConfigurationException;
+use Webmarketer\WebmarketerSdk;
 
 abstract class ServiceWrapper
 {
@@ -11,24 +12,20 @@ abstract class ServiceWrapper
     /** @var ApiService */
     protected $api_service;
 
-    protected $config;
+    /** @var WebmarketerSdk */
+    protected $sdk;
 
-    public function __construct($api_service, $config)
+    public function __construct($api_service, $sdk)
     {
         $this->api_service = $api_service;
-        $this->config = $config;
+        $this->sdk = $sdk;
 
         $api_service->setModel($this->model);
     }
 
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
-
     protected function getProjectId($config = [])
     {
-        $config = array_merge_recursive($this->config, $config);
+        $config = array_merge_recursive($this->sdk->getConfig(), $config);
         if (!isset($config['default_project_id']) && !isset($config['project_id'])) {
             throw new ConfigurationException("no specified project id (default_project_id or call specific project id)");
         }

@@ -26,9 +26,8 @@ class HttpService
      */
     private $access_token;
 
-
-
     private $request_processors = [];
+
     private $response_processors = [];
 
     public function addRequestProcessor($key, $callable)
@@ -128,7 +127,6 @@ class HttpService
      */
     public static function getResponseErrorMessage($response)
     {
-        // TODO: fix
         $json_data = json_decode($response->getBody()->getContents());
         return json_last_error() === JSON_ERROR_NONE && isset($json_data) && property_exists($json_data, 'message') ?
             json_encode($json_data->message) :
