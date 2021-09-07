@@ -17,7 +17,8 @@ class PaginatedApiResponseTest extends TestCase
         $this->beforeTest();
         $data = $this->paginated_response->getData();
 
-        $this->assertIsArray($data);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($data));
         $this->assertSameSize($data, $this->payload_stub->data);
         $this->assertInstanceOf(PlaceholderModel::class, $data[0]);
     }

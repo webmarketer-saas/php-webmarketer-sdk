@@ -54,7 +54,8 @@ class ApiServiceTest extends TestCase
         $api_service->setModel(PlaceholderModel::class);
         $get_response = $api_service->get('test', [], false);
 
-        $this->assertIsArray($get_response);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($get_response));
         $this->assertSameSize((array)$array_response_stub->body, $get_response);
         $this->assertEquals(get_class($get_response[0]), $api_service->getModel());
     }

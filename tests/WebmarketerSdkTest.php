@@ -25,7 +25,8 @@ class WebmarketerSdkTest extends TestCase
         $sdk = new WebmarketerSdk();
         $default_config = $sdk->getConfig();
 
-        $this->assertIsArray($default_config);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($default_config));
         $this->assertSame($default_config, $expected_default_configuration);
     }
 
@@ -39,7 +40,8 @@ class WebmarketerSdkTest extends TestCase
         $sdk = new WebmarketerSdk($overrided_default_configuration);
         $config = $sdk->getConfig();
 
-        $this->assertIsArray($config);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($config));
         $this->assertSame($config, $overrided_default_configuration);
     }
 

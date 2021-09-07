@@ -20,7 +20,8 @@ class ModelTest extends TestCase
 
         $this->assertInstanceOf(PlaceholderModel::class, $model);
         $this->assertEquals($model->_id, $stub_array['_id']);
-        $this->assertIsArray($model->test_values);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($model->test_values));
         $this->assertEquals($model->test_values, $stub_array['test_values']);
     }
 
@@ -38,7 +39,8 @@ class ModelTest extends TestCase
 
         $this->assertInstanceOf(PlaceholderModel::class, $model);
         $this->assertEquals($model->_id, $stub_object->_id);
-        $this->assertIsArray($model->test_values);
+        /** PHP 5.6 compatibility syntax */
+        $this->assertTrue(is_array($model->test_values));
         $this->assertEquals($model->test_values, $stub_object->test_values);
     }
 }
