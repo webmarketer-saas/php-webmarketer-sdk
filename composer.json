@@ -38,7 +38,7 @@
             "vendor/bin/phpunit tests"
         ],
         "tests-coverage": [
-            "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover ./tmp/coverage.xml && vendor/bin/coverage-check ./tmp/coverage.xml 80"
+            "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml && vendor/bin/coverage-check coverage.xml 80"
         ]
     }
 }

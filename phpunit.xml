@@ -20,4 +20,16 @@
             <directory>src/HttpService</directory>
         </exclude>
     </coverage>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>src/Exception</directory>
+                <directory>src/Api/Project</directory>
+                <directory>src/Api/Workspace</directory>
+                <directory>src/HttpService</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>
