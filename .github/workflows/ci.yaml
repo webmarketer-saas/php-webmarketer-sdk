@@ -19,9 +19,6 @@ jobs:
         php:
           - '5.6'
           - '8.0'
-        dependencies:
-          - lowest
-          - highest
 
     steps:
       - name: Checkout
@@ -49,13 +46,8 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-${{ matrix.php }}-${{ matrix.dependencies }}-composer-
 
-      - name: Install highest dependencies
+      - name: Install dependencies
         run: composer update --no-progress --no-interaction --prefer-dist
-        if: ${{ matrix.dependencies == 'highest' }}
-
-      - name: Install lowest dependencies
-        run: composer update --no-progress --no-interaction --prefer-dist --prefer-lowest
-        if: ${{ matrix.dependencies == 'lowest' }}
 
       - name: Run tests
         run: composer tests-coverage
