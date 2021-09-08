@@ -108,6 +108,23 @@ class ApiService
 
     /**
      * @param string $endpoint
+     * @param array $body
+     *
+     * @throws Exception
+     * @throws BadRequestException
+     * @throws UnauthorizedException
+     * @throws EndpointNotFoundException
+     * @throws GenericHttpException
+     */
+    public function patch($endpoint, $body = [])
+    {
+        $this->http_service->sendRequest('PATCH', $endpoint, $body, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+
+    /**
+     * @param string $endpoint
      *
      * @throws Exception
      * @throws BadRequestException

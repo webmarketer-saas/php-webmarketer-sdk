@@ -3,3 +3,4 @@
 .idea
 .php-cs-fixer.dist.php
 /secrets
+coverage.xml

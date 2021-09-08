@@ -22,6 +22,7 @@ class Field extends AbstractApiObject
 
     /**
      * Field label
+     * [Required]
      *
      * @var string
      */
@@ -29,6 +30,7 @@ class Field extends AbstractApiObject
 
     /**
      * Field key
+     * [Required]
      *
      * @var string
      */
@@ -43,6 +45,7 @@ class Field extends AbstractApiObject
 
     /**
      * Field value type (string, number, phone, currency)
+     * [Required]
      *
      * @var string
      */
@@ -50,6 +53,7 @@ class Field extends AbstractApiObject
 
     /**
      * Determine if this is used for reconciliation
+     * [Required]
      *
      * @var boolean
      */

@@ -19,12 +19,4 @@ abstract class AbstractApiObject
         }
         return $instance;
     }
-
-    /**
-     * @return array
-     */
-    public function getObject()
-    {
-        return get_object_vars($this);
-    }
 }

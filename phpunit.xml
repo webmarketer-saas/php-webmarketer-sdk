@@ -1,5 +1,35 @@
 <phpunit bootstrap="vendor/autoload.php">
     <php>
-        <env name="WEBMARKETER_APPLICATION_CREDENTIALS" value="/usr/src/app/secrets/dev-sa.json" force="true" />
+        <env name="WEBMARKETER_APPLICATION_CREDENTIALS" value="./tests/test-sa.json" force="true" />
     </php>
+
+    <testsuites>
+        <testsuite name="php-webmarketer-sdk">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>src/Exception</directory>
+            <directory>src/Api/Project</directory>
+            <directory>src/Api/Workspace</directory>
+            <directory>src/HttpService</directory>
+        </exclude>
+    </coverage>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>src/Exception</directory>
+                <directory>src/Api/Project</directory>
+                <directory>src/Api/Workspace</directory>
+                <directory>src/HttpService</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

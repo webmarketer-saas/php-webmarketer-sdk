@@ -51,13 +51,14 @@ class OAuth
      *
      * @param string | null $credential
      * @param string $scopes
+     * @param bool $fallback_to_env_var
      *
      * @throws CredentialException
      */
-    public function __construct($http_service, $credential, $scopes)
+    public function __construct($http_service, $credential, $scopes, $fallback_to_env_var = true)
     {
         $this->http_service = $http_service;
-        $this->credential = is_null($credential) ?
+        $this->credential = is_null($credential) && $fallback_to_env_var ?
             $this->loadCredentialFromEnv() :
             json_decode($credential, true);
         $this->scopes = $scopes;
@@ -124,6 +125,7 @@ class OAuth
      * Load the JSON key from path specified in env var
      *
      * @return array | null;
+     * @codeCoverageIgnore
      */
     private function loadCredentialFromEnv()
     {
