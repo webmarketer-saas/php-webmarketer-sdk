@@ -7,8 +7,10 @@
 
 # PHP SDK for Webmarketer
 
+[![Latest Stable Version](http://poser.pugx.org/webmarketer/webmarketer-php/v)](https://packagist.org/packages/webmarketer/webmarketer-php)
 [![Total Downloads](http://poser.pugx.org/webmarketer/webmarketer-php/downloads)](https://packagist.org/packages/webmarketer/webmarketer-php)
 [![Latest Unstable Version](http://poser.pugx.org/webmarketer/webmarketer-php/v/unstable)](https://packagist.org/packages/webmarketer/webmarketer-php)
+[![PHP Version Require](http://poser.pugx.org/webmarketer/webmarketer-php/require/php)](https://packagist.org/packages/webmarketer/webmarketer-php)
 [![License](http://poser.pugx.org/webmarketer/webmarketer-php/license)](https://packagist.org/packages/webmarketer/webmarketer-php)
 
 The official PHP SDK for Webmarketer (app.webmarketer.io).
@@ -59,6 +61,10 @@ composer install
 Run all tests with PHPUnit and the configuration provided :
 ```bash
 composer tests
+```
+Run all tests and check codecoverage (must be >= 80%) with PHPUnit :
+```bash
+composer tests-coverage
 ```
 Lint code :
 ```bash
