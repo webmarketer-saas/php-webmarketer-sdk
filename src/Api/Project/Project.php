@@ -3,7 +3,6 @@
 namespace Webmarketer\Api\Project;
 
 use DateTime;
-use stdClass;
 use Webmarketer\Api\AbstractApiObject;
 
 class Project extends AbstractApiObject
@@ -30,13 +29,6 @@ class Project extends AbstractApiObject
     public $workspaceId;
 
     /**
-     * Workspace of the project
-     *
-     * @var stdClass
-     */
-    public $workspace;
-
-    /**
      * Determine the preset of the project
      * - e-commerce
      * - simple
@@ -61,34 +53,6 @@ class Project extends AbstractApiObject
     public $domain;
 
     /**
-     * Array of accesses configured on the workspace
-     *
-     * @var array
-     */
-    public $accesses;
-
-    /**
-     * Array of custom columns
-     *
-     * @var array
-     */
-    public $customColumns;
-
-    /**
-     * Array of dashboards
-     *
-     * @var array
-     */
-    public $dashboards;
-
-    /**
-     * Array of dashboard widgets
-     *
-     * @var array
-     */
-    public $dashboardWidgets;
-
-    /**
      * Configured currency
      *
      * @var string
@@ -101,13 +65,6 @@ class Project extends AbstractApiObject
      * @var array
      */
     public $phoneParsingConfig;
-
-    /**
-     * State of the project initialisation
-     *
-     * @var stdClass
-     */
-    public $initState;
 
     /**
      * Workspace creation date

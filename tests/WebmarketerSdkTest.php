@@ -15,26 +15,28 @@ use Webmarketer\WebmarketerSdk;
 
 class WebmarketerSdkTest extends TestCase
 {
+    const SDK_DEFAULT_CONFIG = [
+        'credential' => null,
+        'scopes' => '',
+        'access_token' => null,
+        'default_project_id' => null
+    ];
+
     public function testDefaultConfig()
     {
-        $expected_default_configuration = [
-            'credential' => null,
-            'scopes' => ''
-        ];
-
         $sdk = new WebmarketerSdk();
         $default_config = $sdk->getConfig();
 
         /** PHP 5.6 compatibility syntax */
         $this->assertTrue(is_array($default_config));
-        $this->assertSame($default_config, $expected_default_configuration);
+        $this->assertSame($default_config, self::SDK_DEFAULT_CONFIG);
     }
 
     public function testMergeConfig()
     {
         $overrided_default_configuration = [
             'credential' => '{ "privateKey": "", "privateKeyId": "", "clientId": "", "serviceAccountEmail": "" }',
-            'scopes' => 'test'
+            'scopes' => 'test',
         ];
 
         $sdk = new WebmarketerSdk($overrided_default_configuration);
@@ -42,14 +44,17 @@ class WebmarketerSdkTest extends TestCase
 
         /** PHP 5.6 compatibility syntax */
         $this->assertTrue(is_array($config));
-        $this->assertSame($config, $overrided_default_configuration);
+        $this->assertSame($config, array_merge(
+            self::SDK_DEFAULT_CONFIG,
+            $overrided_default_configuration
+        ));
     }
 
     public function testSdkSetConfig()
     {
         $config = [
             'credential' => null,
-            'scopes' => 'test-sdk-set-config'
+            'scopes' => 'test-sdk-set-config',
         ];
 
         $sdk = new WebmarketerSdk();
@@ -57,8 +62,21 @@ class WebmarketerSdkTest extends TestCase
         $sdk->setConfig($config);
         $changed_config_oauth_service = $sdk->getOAuthService();
 
-        $this->assertEquals($sdk->getConfig(), $config);
+        $this->assertEquals($sdk->getConfig(), array_merge(
+            self::SDK_DEFAULT_CONFIG,
+            $config
+        ));
         $this->assertNotEquals($init_oauth_service, $changed_config_oauth_service);
+    }
+
+    public function testProvideConfigAccessToken()
+    {
+        $access_token_stub = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+        $sdk = new WebmarketerSdk([
+            'access_token' => $access_token_stub
+        ]);
+
+        $this->assertEquals("{$sdk->getAccessToken()}", $access_token_stub);
     }
 
     public function testGetOAuthService()

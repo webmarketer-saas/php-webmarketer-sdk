@@ -31,6 +31,17 @@ class WebmarketerSdk
     const BASE_USER_AGENT = 'php-webmarketer-sdk';
     const BASE_API_PATH = 'https://api.webmarketer-staging.me/api';
     const BASE_OAUTH_PATH = 'https://oauth.webmarketer-staging.me/oidc';
+    const SDK_DEFAULT_CONFIG = [
+        // JSON credential or path to JSON file
+        // if null, SDK try to get JSON file from path in WEBMARKETER_APPLICATION_CREDENTIALS env var
+        'credential' => null,
+        // Scopes, string, space separated
+        'scopes' => '',
+        // Initial access token to provide
+        'access_token' => null,
+        // Default project id
+        'default_project_id' => null
+    ];
 
     /** @var OAuth */
     private $oauth;
@@ -58,25 +69,8 @@ class WebmarketerSdk
     public function __construct($config = [])
     {
         $this->checkRequiredDependencies();
-
-        $this->config = array_merge(
-            [
-                // JSON credential or path to JSON file
-                // if null, SDK try to get JSON file from path in WEBMARKETER_APPLICATION_CREDENTIALS env var
-                'credential' => null,
-                // Scopes, string, space separated
-                'scopes' => '',
-            ],
-            $config
-        );
-
         $this->http_service = $this->buildHttpService();
-
-        $this->oauth = new OAuth(
-            $this->http_service,
-            $this->config['credential'],
-            $this->config['scopes']
-        );
+        $this->setConfig($config);
     }
 
     /**
@@ -100,12 +94,23 @@ class WebmarketerSdk
      */
     public function setConfig($config)
     {
-        $this->config = $config;
+        $this->config = array_merge(self::SDK_DEFAULT_CONFIG, $config);
+        if (!is_null($this->config['access_token'])) {
+            $this->access_token = new JWT($this->config['access_token']);
+        }
         $this->oauth = new OAuth(
             $this->http_service,
             $this->config['credential'],
             $this->config['scopes']
         );
+    }
+
+    /**
+     * @return JWT | null
+     */
+    public function getAccessToken()
+    {
+        return $this->access_token;
     }
 
     /**

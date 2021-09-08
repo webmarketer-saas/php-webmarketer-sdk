@@ -43,34 +43,6 @@ class Workspace extends AbstractApiObject
     public $clientId;
 
     /**
-     * Array of SA configured on the workspace
-     *
-     * @var array
-     */
-    public $serviceAccounts;
-
-    /**
-     * Array of accesses configured on the workspace
-     *
-     * @var array
-     */
-    public $accesses;
-
-    /**
-     * Array of projects in the workspace
-     *
-     * @var array
-     */
-    public $projects;
-
-    /**
-     * Array of roles configured on the workspace
-     *
-     * @var array
-     */
-    public $roles;
-
-    /**
      * Workspace creation date
      *
      * @var DateTime
