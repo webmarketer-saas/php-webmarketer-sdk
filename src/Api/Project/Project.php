@@ -39,6 +39,14 @@ class Project extends AbstractApiObject
     public $mode;
 
     /**
+     * Determine the expiration policy in days
+     * [Required]
+     *
+     * @var number | null
+     */
+    public $retentionDurationInDays;
+
+    /**
      * Project picture URL
      *
      * @var string

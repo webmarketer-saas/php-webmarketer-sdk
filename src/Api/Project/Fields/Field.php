@@ -2,6 +2,7 @@
 
 namespace Webmarketer\Api\Project\Fields;
 
+use DateTime;
 use Webmarketer\Api\AbstractApiObject;
 
 class Field extends AbstractApiObject
@@ -15,10 +16,19 @@ class Field extends AbstractApiObject
 
     /**
      * Field type (one of user, metric or state)
+     * [Required]
      *
      * @var string
      */
     public $entity;
+
+    /**
+     * Determine if this field is a PII (RGPD compliant)
+     * [Required]
+     *
+     * @var boolean
+     */
+    public $isPii;
 
     /**
      * Field label
@@ -37,7 +47,16 @@ class Field extends AbstractApiObject
     public $key;
 
     /**
+     * Array of key => value field's metadata
+     * Recommended to add a from to identify where the field was created
+     *
+     * @var array
+     */
+    public $metadata;
+
+    /**
      * Field projectId
+     * [Required]
      *
      * @var string
      */
@@ -60,9 +79,9 @@ class Field extends AbstractApiObject
     public $discriminant;
 
     /**
-     * Determine if this field is optional in eventType
+     * Field archive date
      *
-     * @var boolean
+     * @var DateTime | null
      */
-    public $optional;
+    public $archivedAt;
 }
