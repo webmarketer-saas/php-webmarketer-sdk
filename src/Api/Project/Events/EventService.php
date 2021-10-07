@@ -13,12 +13,13 @@ class EventService extends ServiceWrapper
      * @param Event $event
      * @param array $config call specific SDK configuration
      *
+     * @return string
      * @throws Exception
      */
     public function create($event, $config = [])
     {
         $event->projectId = $this->getProjectId($config);
-        $this->api_service->post("events", $event);
+        return $this->api_service->post("events", $event);
     }
 
     /**
