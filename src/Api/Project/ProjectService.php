@@ -15,7 +15,7 @@ class ProjectService extends ServiceWrapper
      */
     public function getAll()
     {
-        return $this->api_service->get("agents/projects");
+        return $this->api_service->get("agents/me/projects");
     }
 
     /**
