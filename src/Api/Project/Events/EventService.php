@@ -26,7 +26,7 @@ class EventService extends ServiceWrapper
     /**
      * @param string $event_id
      * @param string $storage_key storage_key of the field to update
-     * @param boolean $value new value of the boolean state
+     * @param number $value new value of the boolean state
      * @param DateTime | null $date optionally provide a date to antedate value update
      *
      * @throws Exception
@@ -57,7 +57,7 @@ class EventService extends ServiceWrapper
     public function upsertEventStatistic($event_id, $storage_key, $value, $date = null, $config = [])
     {
         $project_id = $this->getProjectId($config);
-        $payload = ["rawValue" => $value];
+        $payload = ["value" => $value];
         if (!is_null($date)) {
             $payload["date"] = $date;
         }
