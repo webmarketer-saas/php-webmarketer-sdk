@@ -26,11 +26,11 @@ use Webmarketer\OAuth\OAuth;
  */
 class WebmarketerSdk
 {
-    const SDK_VERSION = '0.2.0';
+    const SDK_VERSION = '1.1.0';
     const API_VERSION = 'v1';
     const BASE_USER_AGENT = 'php-webmarketer-sdk';
-    const BASE_API_PATH = 'https://api.webmarketer-staging.me/api';
-    const BASE_OAUTH_PATH = 'https://oauth.webmarketer-staging.me/oidc';
+    const BASE_API_PATH = 'https://app.webmarketer.io/api';
+    const BASE_OAUTH_PATH = 'https://oauth.webmarketer.io/oidc';
     const SDK_DEFAULT_CONFIG = [
         // JSON credential or path to JSON file
         // if null, SDK try to get JSON file from path in WEBMARKETER_APPLICATION_CREDENTIALS env var
