@@ -29,7 +29,7 @@ class WebmarketerSdk
     const SDK_VERSION = '1.1.0';
     const API_VERSION = 'v1';
     const BASE_USER_AGENT = 'php-webmarketer-sdk';
-    const BASE_API_PATH = 'https://app.webmarketer.io/api';
+    const BASE_API_PATH = 'https://api.webmarketer.io/api';
     const BASE_OAUTH_PATH = 'https://oauth.webmarketer.io/oidc';
     const SDK_DEFAULT_CONFIG = [
         // JSON credential or path to JSON file
