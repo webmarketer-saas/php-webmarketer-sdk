@@ -19,6 +19,8 @@ class EventTypeService extends ServiceWrapper
      */
     public function getAll($params = [], $config = [])
     {
+        $params["archived"] = false;
+        
         return $this->api_service->get(
             "projects/{$this->getProjectId($config)}/event-types",
             $params,

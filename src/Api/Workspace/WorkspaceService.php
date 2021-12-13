@@ -16,7 +16,7 @@ class WorkspaceService extends ServiceWrapper
     public function getCurrentWorkspace()
     {
         // SA belong to only one workspace
-        return $this->api_service->get("agents/workspaces")[0];
+        return $this->api_service->get("agents/me/workspaces")[0];
     }
 }
 

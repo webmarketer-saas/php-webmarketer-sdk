@@ -31,11 +31,32 @@ class EventType extends AbstractApiObject
     public $reference;
 
     /**
+     * Array of key => value eventType's metadata
+     *
+     * @var array
+     */
+    public $metadata;
+
+    /**
      * Event project id
      *
      * @var string
      */
     public $projectId;
+
+    /**
+     * Phone parsing configuration
+     *
+     * @var array
+     */
+    public $phoneParsingConfig;
+
+    /**
+     * Event expiration policy configuration
+     *
+     * @var ExpirationPolicyFromProject | ExpirationPolicyFromEventType
+     */
+    public $expirationPolicy;
 
     /**
      * Event configured fields
