@@ -81,40 +81,4 @@ class ApiServiceTest extends TestCase
         $this->assertInstanceOf(PlaceholderModel::class, $get_response);
         $this->assertEquals($get_response->_id, $entity_response_stub->body->_id);
     }
-
-    public function testPost()
-    {
-        $ex = null;
-        try {
-            $http_service_mock = $this->createMock(HttpService::class);
-            $api_service = new ApiService($http_service_mock);
-            $api_service->post('test', []);
-        } catch (\Exception $ex) {}
-
-        $this->assertNull($ex);
-    }
-
-    public function testPatch()
-    {
-        $ex = null;
-        try {
-            $http_service_mock = $this->createMock(HttpService::class);
-            $api_service = new ApiService($http_service_mock);
-            $api_service->patch('test', []);
-        } catch (\Exception $ex) {}
-
-        $this->assertNull($ex);
-    }
-
-    public function testDelete()
-    {
-        $ex = null;
-        try {
-            $http_service_mock = $this->createMock(HttpService::class);
-            $api_service = new ApiService($http_service_mock);
-            $api_service->delete('test');
-        } catch (\Exception $ex) {}
-
-        $this->assertNull($ex);
-    }
 }
