@@ -3,6 +3,7 @@
 namespace Webmarketer\Api;
 
 use Exception;
+use stdClass;
 use Webmarketer\Exception\BadRequestException;
 use Webmarketer\Exception\EndpointNotFoundException;
 use Webmarketer\Exception\GenericHttpException;
@@ -25,7 +26,6 @@ class ApiService
 
     /**
      * @param HttpService $http_service
-     * @param string $model
      */
     public function __construct($http_service)
     {
@@ -93,6 +93,7 @@ class ApiService
      * @param string $endpoint
      * @param array $body
      *
+     * @return stdClass | string
      * @throws Exception
      * @throws BadRequestException
      * @throws UnauthorizedException
@@ -101,9 +102,10 @@ class ApiService
      */
     public function post($endpoint, $body = [])
     {
-        $this->http_service->sendRequest('POST', $endpoint, $body, [
+        $response = $this->http_service->sendRequest('POST', $endpoint, $body, [
             'Content-Type' => 'application/json'
         ]);
+        return $response->body;
     }
 
     /**

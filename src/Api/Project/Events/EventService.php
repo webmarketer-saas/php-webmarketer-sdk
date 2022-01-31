@@ -2,6 +2,7 @@
 
 namespace Webmarketer\Api\Project\Events;
 
+use DateTime;
 use Exception;
 use Webmarketer\Api\ServiceWrapper;
 
@@ -13,53 +14,57 @@ class EventService extends ServiceWrapper
      * @param Event $event
      * @param array $config call specific SDK configuration
      *
+     * @return string
      * @throws Exception
      */
     public function create($event, $config = [])
     {
         $event->projectId = $this->getProjectId($config);
-        $this->api_service->post("events", $event);
+        return $this->api_service->post("events", $event);
     }
 
     /**
-     * @param string $event_id Event ID
-     * @param EventAddOperation[] $add_operations
+     * @param string $event_id
+     * @param string $storage_key storage_key of the field to update
+     * @param number $value new value of the boolean state
+     * @param DateTime | null $date optionally provide a date to antedate value update
      *
      * @throws Exception
      */
-    public function addEventData($event_id, $add_operations)
+    public function upsertEventState($event_id, $storage_key, $value, $date = null, $config = [])
     {
+        $project_id = $this->getProjectId($config);
+        $payload = ["value" => $value];
+        if (!is_null($date)) {
+            $payload["date"] = $date;
+        }
+
+
         $this->api_service->patch(
-            "events/{$event_id}",
-            $add_operations
+            "projects/$project_id/events/$event_id/states/$storage_key",
+            $payload
         );
     }
 
     /**
-     * @param string $event_id Event ID
-     * @param EventReplaceOperation[] $replace_operations
+     * @param string $event_id
+     * @param string $storage_key storage_key of the field to update
+     * @param mixed $value new value of the statistic, value will be automatically formatted
+     * @param DateTime | null $date optionally provide a date to antedate value update
      *
      * @throws Exception
      */
-    public function replaceEventData($event_id, $replace_operations)
+    public function upsertEventStatistic($event_id, $storage_key, $value, $date = null, $config = [])
     {
-        $this->api_service->patch(
-            "events/{$event_id}",
-            $replace_operations
-        );
-    }
+        $project_id = $this->getProjectId($config);
+        $payload = ["value" => $value];
+        if (!is_null($date)) {
+            $payload["date"] = $date;
+        }
 
-    /**
-     * @param string $event_id Event ID
-     * @param EventRemoveOperation[] $remove_operations
-     *
-     * @throws Exception
-     */
-    public function removeEventData($event_id, $remove_operations)
-    {
         $this->api_service->patch(
-            "events/{$event_id}",
-            $remove_operations
+            "projects/$project_id/events/$event_id/statistics/$storage_key",
+            $payload
         );
     }
 }

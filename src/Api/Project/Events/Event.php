@@ -42,7 +42,7 @@ class Event extends AbstractApiObject
      * Event payload
      * [Required]
      *
-     * @var string;
+     * @var array;
      */
     public $data;
 }
