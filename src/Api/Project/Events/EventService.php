@@ -4,6 +4,7 @@ namespace Webmarketer\Api\Project\Events;
 
 use DateTime;
 use Exception;
+use Webmarketer\Api\PaginatedApiResponse;
 use Webmarketer\Api\ServiceWrapper;
 
 class EventService extends ServiceWrapper
@@ -11,7 +12,7 @@ class EventService extends ServiceWrapper
     protected $model = Event::class;
 
     /**
-     * @param Event $event
+     * @param EventPayload $event
      * @param array $config call specific SDK configuration
      *
      * @return string
@@ -65,6 +66,23 @@ class EventService extends ServiceWrapper
         $this->api_service->patch(
             "projects/$project_id/events/$event_id/statistics/$storage_key",
             $payload
+        );
+    }
+
+    /**
+     * @param string $user_id
+     * @param array $params
+     * @param array $config call specific SDK configuration
+     *
+     * @return PaginatedApiResponse
+     * @throws Exception
+     */
+    public function getUserEvents($user_id, $params = [], $config = [])
+    {
+        return $this->api_service->get(
+            "projects/{$this->getProjectId($config)}/users/$user_id/events",
+            $params,
+            true
         );
     }
 }
