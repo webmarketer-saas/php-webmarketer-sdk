@@ -19,6 +19,9 @@ class PaginatedApiResponse
     /** @var string */
     private $endpoint;
 
+    /** @var string */
+    private $method;
+
     /** @var array */
     private $params;
 
@@ -28,12 +31,13 @@ class PaginatedApiResponse
      * @param array $params
      * @param ApiService $service
      */
-    public function __construct($payload, $endpoint, $params, $service)
+    public function __construct($payload, $endpoint, $params, $service, $method = 'GET')
     {
         $this->payload = $payload;
         $this->service = $service;
         $this->endpoint = $endpoint;
         $this->params = $params;
+        $this->method = $method;
     }
 
     /**
@@ -86,7 +90,7 @@ class PaginatedApiResponse
      */
     public function hasNext()
     {
-        return $this->payload->offset + $this->payload->limit <= $this->payload->total;
+        return $this->payload->offset < $this->payload->total;
     }
 
     /**
@@ -100,11 +104,9 @@ class PaginatedApiResponse
         $next_page_params = $this->params;
         $next_page_params['offset'] += $next_page_params['limit'];
 
-        return  $this->service->get(
-            $this->endpoint,
-            $next_page_params,
-            true
-        );
+        return $this->method === 'POST' ?
+            $this->service->post($this->endpoint, $next_page_params, true) :
+            $this->service->get($this->endpoint, $next_page_params, true);
     }
 
     /**

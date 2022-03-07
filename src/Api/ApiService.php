@@ -93,18 +93,32 @@ class ApiService
      * @param string $endpoint
      * @param array $body
      *
-     * @return stdClass | string
+     * @return PaginatedApiResponse | AbstractApiObject[] | string
      * @throws Exception
      * @throws BadRequestException
      * @throws UnauthorizedException
      * @throws EndpointNotFoundException
      * @throws GenericHttpException
      */
-    public function post($endpoint, $body = [])
+    public function post($endpoint, $body = [], $is_paginated = false)
     {
+        if ($is_paginated) {
+            $body['limit'] = key_exists('limit', $body) && $body['limit'] ? $body['limit'] : self::PER_PAGE;
+            $body['offset'] = key_exists('offset', $body) && $body['offset'] ? $body['offset'] : 0;
+        }
+
         $response = $this->http_service->sendRequest('POST', $endpoint, $body, [
             'Content-Type' => 'application/json'
         ]);
+
+        if ($is_paginated) {
+            return new PaginatedApiResponse($response->body, $endpoint, $body, $this, 'POST');
+        } elseif (is_array($response->body)) {
+            return array_map(function ($item) {
+                return call_user_func([$this->model, 'createFromArray'], $item);
+            }, $response->body);
+        }
+
         return $response->body;
     }
 

@@ -2,47 +2,71 @@
 
 namespace Webmarketer\Api\Project\Events;
 
+use DateTime;
 use Webmarketer\Api\AbstractApiObject;
 
 class Event extends AbstractApiObject
 {
     /**
      * Event project ID
-     * [Required]
      *
      * @var string
      */
     public $projectId;
 
     /**
-     * Event nonce
-     * [Required]
+     * Event user ID
      *
      * @var string
      */
-    public $nonce;
+    public $userId;
+
+    /**
+     * Associative array of event eventFields
+     *
+     * @var array
+     */
+    public $event;
+
+    /**
+     * Associative array of event userFields
+     *
+     * @var array
+     */
+    public $user;
+
+    /**
+     * Event metrics
+     *
+     * @var array
+     */
+    public $metrics;
 
     /**
      * Event type slug
-     * [Required]
      *
      * @var string;
      */
     public $eventType;
 
     /**
-     * Event tracking ID
-     * [Required]
+     * Expiration configuration of the event
      *
-     * @var string;
+     * @var array | null
      */
-    public $trackerId;
+    public $expirationPolicy;
 
     /**
-     * Event payload
-     * [Required]
+     * Event creation date
      *
-     * @var array;
+     * @var DateTime
      */
-    public $data;
+    public $createdAt;
+
+    /**
+     * Event update date
+     *
+     * @var DateTime
+     */
+    public $updatedAt;
 }

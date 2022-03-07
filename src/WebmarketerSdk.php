@@ -9,6 +9,7 @@ use Webmarketer\Api\Project\EventTypes\EventTypeService;
 use Webmarketer\Api\Project\Fields\FieldService;
 use Webmarketer\Api\Project\ProjectService;
 use Webmarketer\Api\Project\TrafficSources\TrafficSourceService;
+use Webmarketer\Api\Project\Users\UserService;
 use Webmarketer\Api\ServiceWrapper;
 use Webmarketer\Api\Workspace\WorkspaceService;
 use Webmarketer\Exception\CredentialException;
@@ -217,6 +218,20 @@ class WebmarketerSdk
             );
         }
         return $this->services[CustomColumnService::class];
+    }
+
+    /**
+     * @return UserService
+     */
+    public function getUserService()
+    {
+        if (!isset($this->services[UserService::class])) {
+            $this->services[UserService::class] = new UserService(
+                new ApiService($this->http_service),
+                $this
+            );
+        }
+        return $this->services[UserService::class];
     }
 
     /**
