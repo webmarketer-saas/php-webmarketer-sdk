@@ -90,7 +90,7 @@ class PaginatedApiResponse
      */
     public function hasNext()
     {
-        return $this->payload->offset < $this->payload->total;
+        return $this->payload->offset + $this->payload->limit < $this->payload->total;
     }
 
     /**
