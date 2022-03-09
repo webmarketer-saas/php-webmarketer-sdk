@@ -8,6 +8,13 @@ use Webmarketer\Api\AbstractApiObject;
 class Event extends AbstractApiObject
 {
     /**
+     * Event ID
+     *
+     * @var string
+     */
+    public $_id;
+
+    /**
      * Event project ID
      *
      * @var string
