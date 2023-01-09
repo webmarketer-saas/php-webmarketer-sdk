@@ -128,8 +128,8 @@ class HttpService
     public static function getResponseErrorMessage($response)
     {
         $json_data = json_decode($response->getBody()->getContents());
-        return json_last_error() === JSON_ERROR_NONE && isset($json_data) && property_exists($json_data, 'message') ?
-            json_encode($json_data->message) :
+        return json_last_error() === JSON_ERROR_NONE && isset($json_data) && property_exists($json_data, 'data') ?
+            json_encode($json_data->data) :
             '';
     }
 
