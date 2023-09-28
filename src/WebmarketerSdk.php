@@ -3,6 +3,7 @@
 namespace Webmarketer;
 
 use Exception;
+use Webmarketer\Api\Agent\AgentService;
 use Webmarketer\Api\ApiService;
 use Webmarketer\Api\Project\CustomColumns\CustomColumnService;
 use Webmarketer\Api\Project\Events\EventService;
@@ -104,6 +105,20 @@ class WebmarketerSdk
     public function getAccessToken()
     {
         return $this->auth_provider->getJwt();
+    }
+
+    /**
+     * @return AgentService
+     */
+    public function getAgentService()
+    {
+        if (!isset($this->services[AgentService::class])) {
+            $this->services[AgentService::class] = new AgentService(
+                new ApiService($this->http_service),
+                $this
+            );
+        }
+        return $this->services[AgentService::class];
     }
 
     /**
