@@ -5,7 +5,6 @@ namespace Webmarketer\Tests\Auth;
 use PHPUnit\Framework\TestCase;
 use Webmarketer\Auth\JWT;
 use Webmarketer\Auth\RefreshTokenAuthProvider;
-use Webmarketer\Auth\ServiceAccountAuthProvider;
 use Webmarketer\Exception\CredentialException;
 use Webmarketer\HttpService\HttpService;
 use Webmarketer\WebmarketerSdk;
@@ -17,8 +16,9 @@ class RefreshTokenAuthProviderTest extends TestCase
         $this->expectException(CredentialException::class);
 
         $auth_provider = new RefreshTokenAuthProvider([
-            'refresh_token' => '',
-            'client_secret' => ''
+            'refresh_token' => 'test',
+            'client_id' => '',
+            'client_secret' => 'test'
         ]);
         new WebmarketerSdk([], $auth_provider);
     }
@@ -28,8 +28,9 @@ class RefreshTokenAuthProviderTest extends TestCase
         $this->expectException(CredentialException::class);
 
         $auth_provider = new RefreshTokenAuthProvider([
-            'refresh_token' => '',
-            'client_id' => '',
+            'refresh_token' => 'test',
+            'client_id' => 'test',
+            'client_secret' => ''
         ]);
         new WebmarketerSdk([], $auth_provider);
     }
@@ -39,8 +40,9 @@ class RefreshTokenAuthProviderTest extends TestCase
         $this->expectException(CredentialException::class);
 
         $auth_provider = new RefreshTokenAuthProvider([
-            'client_secret' => '',
-            'client_id' => '',
+            'refresh_token' => '',
+            'client_id' => 'test',
+            'client_secret' => 'test'
         ]);
         new WebmarketerSdk([], $auth_provider);
     }

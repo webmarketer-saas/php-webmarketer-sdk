@@ -3,6 +3,7 @@
 namespace Webmarketer\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Webmarketer\Api\Agent\AgentService;
 use Webmarketer\Api\Project\CustomColumns\CustomColumnService;
 use Webmarketer\Api\Project\Events\EventService;
 use Webmarketer\Api\Project\EventTypes\EventTypeService;
@@ -61,6 +62,12 @@ class WebmarketerSdkTest extends TestCase
             self::SDK_DEFAULT_CONFIG,
             $config
         ));
+    }
+
+    public function testGetAgentService()
+    {
+        $sdk = new WebmarketerSdk();
+        $this->assertInstanceOf(AgentService::class, $sdk->getAgentService());
     }
 
     public function testGetWorkspaceService()
