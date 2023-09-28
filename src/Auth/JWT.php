@@ -1,6 +1,6 @@
 <?php
 
-namespace Webmarketer\OAuth;
+namespace Webmarketer\Auth;
 
 class JWT
 {

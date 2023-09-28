@@ -1,9 +1,9 @@
 <?php
 
-namespace Webmarketer\Tests\OAuth;
+namespace Webmarketer\Tests\Auth;
 
 use PHPUnit\Framework\TestCase;
-use Webmarketer\OAuth\JWT;
+use Webmarketer\Auth\JWT;
 
 class JWTTest extends TestCase
 {

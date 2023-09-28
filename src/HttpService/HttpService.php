@@ -21,11 +21,6 @@ class HttpService
      */
     private $http_client;
 
-    /**
-     * @var string | null
-     */
-    private $access_token;
-
     private $request_processors = [];
 
     private $response_processors = [];
@@ -43,21 +38,11 @@ class HttpService
     /**
      * Construct a new HttpService that wrap http requests logic
      *
-     * @param string | null $access_token
      * @param HttpClient | null $http_client
      */
-    public function __construct($access_token = null, $http_client = null)
+    public function __construct($http_client = null)
     {
         $this->http_client = $http_client;
-        $this->access_token = $access_token;
-    }
-
-    /**
-     * @param string | null $access_token
-     */
-    public function setAccessToken($access_token)
-    {
-        $this->access_token = $access_token;
     }
 
     /**

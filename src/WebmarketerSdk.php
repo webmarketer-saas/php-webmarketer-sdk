@@ -2,6 +2,7 @@
 
 namespace Webmarketer;
 
+use Exception;
 use Webmarketer\Api\ApiService;
 use Webmarketer\Api\Project\CustomColumns\CustomColumnService;
 use Webmarketer\Api\Project\Events\EventService;
@@ -12,6 +13,8 @@ use Webmarketer\Api\Project\TrafficSources\TrafficSourceService;
 use Webmarketer\Api\Project\Users\UserService;
 use Webmarketer\Api\ServiceWrapper;
 use Webmarketer\Api\Workspace\WorkspaceService;
+use Webmarketer\Auth\RefreshTokenAuthProvider;
+use Webmarketer\Auth\ServiceAccountAuthProvider;
 use Webmarketer\Exception\CredentialException;
 use Webmarketer\Exception\DependencyException;
 use Webmarketer\Exception\BadRequestException;
@@ -19,42 +22,31 @@ use Webmarketer\Exception\EndpointNotFoundException;
 use Webmarketer\Exception\GenericHttpException;
 use Webmarketer\Exception\UnauthorizedException;
 use Webmarketer\HttpService\HttpService;
-use Webmarketer\OAuth\JWT;
-use Webmarketer\OAuth\OAuth;
+use Webmarketer\Auth\JWT;
 
 /**
  * This is the base class for the Webmarketer SDK.
  */
 class WebmarketerSdk
 {
-    const SDK_VERSION = '1.1.0';
+    const SDK_VERSION = '2.0.0';
     const API_VERSION = 'v1';
     const BASE_USER_AGENT = 'php-webmarketer-sdk';
     const BASE_API_PATH = 'https://api.webmarketer.io/api';
     const BASE_OAUTH_PATH = 'https://oauth.webmarketer.io/oidc';
     const SDK_DEFAULT_CONFIG = [
-        // JSON credential or path to JSON file
-        // if null, SDK try to get JSON file from path in WEBMARKETER_APPLICATION_CREDENTIALS env var
-        'credential' => null,
-        // Scopes, string, space separated
-        'scopes' => '',
-        // Initial access token to provide
-        'access_token' => null,
         // Default project id
         'default_project_id' => null
     ];
 
-    /** @var OAuth */
-    private $oauth;
+    /** @var ServiceAccountAuthProvider | RefreshTokenAuthProvider */
+    private $auth_provider;
 
     /** @var array */
     private $config;
 
     /** @var HttpService */
     private $http_service;
-
-    /** @var JWT | null */
-    private $access_token;
 
     /** @var ServiceWrapper[]  */
     private $services = [];
@@ -63,21 +55,25 @@ class WebmarketerSdk
      * Construct a new instance of the Webmarketer SDK.
      *
      * @param array $config provide optional config on sdk init (merged with default config)
+     * @param ServiceAccountAuthProvider | RefreshTokenAuthProvider | null $auth_provider auth provider used by the SDK to authenticate against Webmarketer API
+     *        (if not provided, default will be based on service account and try to load SA based on the WEBMARKETER_APPLICATION_CREDENTIALS env var)
      *
      * @throws DependencyException
      * @throws CredentialException
      */
-    public function __construct($config = [])
+    public function __construct($config = [], $auth_provider = null)
     {
-        $this->checkRequiredDependencies();
+        $this->auth_provider = is_null($auth_provider)
+            ? new ServiceAccountAuthProvider(['scopes' => 'full_access'])
+            : $auth_provider;
+        $this->auth_provider->init(new HttpService());
+
         $this->http_service = $this->buildHttpService();
         $this->setConfig($config);
     }
 
     /**
      * Get SDK configuration
-     *
-     * @param $config
      *
      * @return array
      */
@@ -90,36 +86,24 @@ class WebmarketerSdk
      * Update SDK configuration
      *
      * @param $config
-     *
-     * @throws CredentialException
      */
     public function setConfig($config)
     {
         $this->config = array_merge(self::SDK_DEFAULT_CONFIG, $config);
-        if (!is_null($this->config['access_token'])) {
-            $this->access_token = new JWT($this->config['access_token']);
-        }
-        $this->oauth = new OAuth(
-            $this->http_service,
-            $this->config['credential'],
-            $this->config['scopes']
-        );
     }
 
     /**
-     * @return JWT | null
+     * @return JWT
+     *
+     * @throws Exception
+     * @throws BadRequestException
+     * @throws UnauthorizedException
+     * @throws EndpointNotFoundException
+     * @throws GenericHttpException
      */
     public function getAccessToken()
     {
-        return $this->access_token;
-    }
-
-    /**
-     * @return OAuth
-     */
-    public function getOAuthService()
-    {
-        return $this->oauth;
+        return $this->auth_provider->getJwt();
     }
 
     /**
@@ -235,19 +219,6 @@ class WebmarketerSdk
     }
 
     /**
-     * Check if required dependencies are available
-     *
-     * @throws DependencyException
-     * @codeCoverageIgnore
-     */
-    private function checkRequiredDependencies()
-    {
-        if (!function_exists('openssl_sign') || !in_array('RSA-SHA256', openssl_get_md_methods(true))) {
-            throw new DependencyException('Missing crypto function openssl_sign() or signing alg RSA-SHA256');
-        }
-    }
-
-    /**
      * Construct and configure HttpService for SDK - Internal
      *
      * @return HttpService
@@ -260,10 +231,7 @@ class WebmarketerSdk
             return $request->withHeader('User-Agent', WebmarketerSdk::BASE_USER_AGENT . '/' . WebmarketerSdk::SDK_VERSION);
         });
         $http_service->addRequestProcessor('req-oauth-processor', function ($request) {
-            if (is_null($this->access_token) || $this->access_token->isExpired()) {
-                $this->access_token = $this->oauth->fetchAccessTokenWithCredential();
-            }
-            return $request->withHeader('Authorization', 'Bearer ' . $this->access_token);
+            return $request->withHeader('Authorization', 'Bearer ' . $this->auth_provider->getJwt());
         });
 
         $http_service->addResponseProcessor('res-generic-processor', function ($response) {
