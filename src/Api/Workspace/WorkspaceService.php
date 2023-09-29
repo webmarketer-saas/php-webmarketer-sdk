@@ -10,13 +10,14 @@ class WorkspaceService extends ServiceWrapper
     protected $model = Workspace::class;
 
     /**
-     * @return Workspace
+     * Get all available workspaces (when using a SA, SA belongs to only one workspace)
+     *
+     * @return Workspace[]
      * @throws Exception
      */
-    public function getCurrentWorkspace()
+    public function getAll()
     {
-        // SA belong to only one workspace
-        return $this->api_service->get("agents/me/workspaces")[0];
+        return $this->api_service->get("agents/me/workspaces");
     }
 }
 
