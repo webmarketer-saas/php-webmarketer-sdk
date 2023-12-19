@@ -55,6 +55,21 @@ class EventTypeService extends ServiceWrapper
     }
 
     /**
+     * @param string $event_ref
+     * @param UpdateEventTypePayload $payload
+     * @param array $config call specific SDK configuration
+     *
+     * @throws Exception
+     */
+    public function updateByReference($event_ref, $payload, $config = [])
+    {
+        $this->api_service->patch(
+            "projects/{$this->getProjectId($config)}/event-types/$event_ref",
+            $payload
+        );
+    }
+
+    /**
      * @param $event_ref
      * @param array $config call specific SDK configuration
      *

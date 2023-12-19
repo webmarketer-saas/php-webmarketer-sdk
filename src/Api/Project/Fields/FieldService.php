@@ -21,6 +21,39 @@ class FieldService extends ServiceWrapper
     }
 
     /**
+     * @param array $config call specific SDK configuration
+     *
+     * @return Field[]
+     * @throws Exception
+     */
+    public function getUserFields($config = [])
+    {
+        return $this->api_service->get("projects/{$this->getProjectId($config)}/user-fields");
+    }
+
+    /**
+     * @param array $config call specific SDK configuration
+     *
+     * @return Field[]
+     * @throws Exception
+     */
+    public function getStateFields($config = [])
+    {
+        return $this->api_service->get("projects/{$this->getProjectId($config)}/state-fields");
+    }
+
+    /**
+     * @param array $config call specific SDK configuration
+     *
+     * @return Field[]
+     * @throws Exception
+     */
+    public function getStatisticFields($config = [])
+    {
+        return $this->api_service->get("projects/{$this->getProjectId($config)}/statistic-fields");
+    }
+
+    /**
      * @param Field $field
      * @param array $config call specific SDK configuration
      *
