@@ -8,6 +8,14 @@ use Webmarketer\Api\AbstractApiObject;
 class EventTypeField extends AbstractApiObject
 {
     /**
+     * Field label
+     * [Required]
+     *
+     * @var string
+     */
+    public $label;
+
+    /**
      * Field entity, can be from project fields :
      *  - user
      *  - state
@@ -74,6 +82,14 @@ class EventTypeField extends AbstractApiObject
      * @var boolean
      */
     public $discriminant;
+
+    /**
+     * Array of key => value field's metadata
+     * Recommended to add a from to identify where the field was created
+     *
+     * @var array
+     */
+    public $metadata;
 
     /**
      * @param stdClass | array $payload

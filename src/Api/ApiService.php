@@ -63,7 +63,7 @@ class ApiService
      */
     public function get($endpoint, $params = [], $is_paginated = false)
     {
-        $url_params = [];
+        $url_params = $params;
         if ($is_paginated) {
             $params = array_merge([
                 'limit' => self::PER_PAGE,

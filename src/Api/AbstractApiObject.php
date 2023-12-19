@@ -4,7 +4,7 @@ namespace Webmarketer\Api;
 
 use stdClass;
 
-abstract class AbstractApiObject
+abstract class AbstractApiObject implements \JsonSerializable
 {
     /**
      * @param stdClass | array $payload
@@ -18,5 +18,12 @@ abstract class AbstractApiObject
             }
         }
         return $instance;
+    }
+
+    public function jsonSerialize()
+    {
+        return array_filter(get_object_vars($this), function ($item) {
+            return !is_null($item);
+        });
     }
 }
