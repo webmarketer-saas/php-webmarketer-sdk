@@ -126,7 +126,7 @@ class HttpService
     private function getEndpointUrl($endpoint)
     {
         return join('/', [
-            WebmarketerSdk::BASE_API_PATH,
+            WebmarketerSdk::getBaseApiPath(),
             WebmarketerSdk::API_VERSION,
             $endpoint
         ]);

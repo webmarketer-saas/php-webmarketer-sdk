@@ -82,7 +82,7 @@ class ServiceAccountAuthProviderTest extends TestCase
                 $this->equalTo([
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ]),
-                $this->equalTo(WebmarketerSdk::BASE_OAUTH_PATH)
+                $this->equalTo(WebmarketerSdk::getBaseOauthPath())
             );
 
         $auth_provider = new ServiceAccountAuthProvider(['scopes' => 'test']);
@@ -116,7 +116,7 @@ class ServiceAccountAuthProviderTest extends TestCase
         $payload = (object) [
             'iss' => $sa['clientId'],
             'sub' => $sa['serviceAccountEmail'],
-            'aud' => join('/', [WebmarketerSdk::BASE_OAUTH_PATH, 'token']),
+            'aud' => join('/', [WebmarketerSdk::getBaseOauthPath(), 'token']),
             'scope' => 'test',
             // 5 minutes is enough to negotiate an access token with the oauth server
             'exp' => time() + 60 * 5

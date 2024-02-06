@@ -63,7 +63,7 @@ class RefreshTokenAuthProvider extends AbstractAuthProvider
             [
                 'Content-Type' => 'application/x-www-form-urlencoded'
             ],
-            WebmarketerSdk::BASE_OAUTH_PATH
+            WebmarketerSdk::getBaseOauthPath()
         );
 
         return new JWT($response->body->access_token);

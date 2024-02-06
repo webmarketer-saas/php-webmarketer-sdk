@@ -78,7 +78,7 @@ class ServiceAccountAuthProvider extends AbstractAuthProvider
         $payload = (object) [
             'iss' => $this->parsed_credential['clientId'],
             'sub' => $this->parsed_credential['serviceAccountEmail'],
-            'aud' => join('/', [WebmarketerSdk::BASE_OAUTH_PATH, 'token']),
+            'aud' => join('/', [WebmarketerSdk::getBaseOauthPath(), 'token']),
             'scope' => $this->scopes,
             // 5 minutes is enough to negotiate an access token with the oauth server
             'exp' => time() + 60 * 5
@@ -104,7 +104,7 @@ class ServiceAccountAuthProvider extends AbstractAuthProvider
             [
                 'Content-Type' => 'application/x-www-form-urlencoded'
             ],
-            WebmarketerSdk::BASE_OAUTH_PATH
+            WebmarketerSdk::getBaseOauthPath()
         );
 
         return new JWT($response->body->access_token);

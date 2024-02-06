@@ -33,8 +33,6 @@ class WebmarketerSdk
     const SDK_VERSION = '2.0.0';
     const API_VERSION = 'v1';
     const BASE_USER_AGENT = 'php-webmarketer-sdk';
-    const BASE_API_PATH = 'https://api.webmarketer.io/api';
-    const BASE_OAUTH_PATH = 'https://oauth.webmarketer.io/oidc';
     const SDK_DEFAULT_CONFIG = [
         // Default project id
         'default_project_id' => null
@@ -231,6 +229,20 @@ class WebmarketerSdk
             );
         }
         return $this->services[UserService::class];
+    }
+
+    /**
+     * @return string
+     */
+    public static function getBaseApiPath()
+    {
+        return getenv('WEBMARKETER_DEBUG_BASE_API_PATH') ?: 'https://api.webmarketer.io/api';
+    }
+
+    /** @return string */
+    public static function getBaseOauthPath()
+    {
+        return getenv('WEBMARKETER_DEBUG_BASE_OAUTH_PATH') ?: 'https://oauth.webmarketer.io/oidc';
     }
 
     /**

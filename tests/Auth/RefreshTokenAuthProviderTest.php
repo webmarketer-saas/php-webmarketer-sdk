@@ -79,7 +79,7 @@ class RefreshTokenAuthProviderTest extends TestCase
                 $this->equalTo([
                     'Content-Type' => 'application/x-www-form-urlencoded'
                 ]),
-                $this->equalTo(WebmarketerSdk::BASE_OAUTH_PATH)
+                $this->equalTo(WebmarketerSdk::getBaseOauthPath())
             );
 
         $auth_provider = new RefreshTokenAuthProvider([
