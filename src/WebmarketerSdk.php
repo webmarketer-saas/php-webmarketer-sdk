@@ -9,6 +9,7 @@ use Webmarketer\Api\Project\CustomColumns\CustomColumnService;
 use Webmarketer\Api\Project\Events\EventService;
 use Webmarketer\Api\Project\EventTypes\EventTypeService;
 use Webmarketer\Api\Project\Fields\FieldService;
+use Webmarketer\Api\Project\Interactions\InteractionService;
 use Webmarketer\Api\Project\ProjectService;
 use Webmarketer\Api\Project\TrafficSources\TrafficSourceService;
 use Webmarketer\Api\Project\Users\UserService;
@@ -229,6 +230,20 @@ class WebmarketerSdk
             );
         }
         return $this->services[UserService::class];
+    }
+
+    /**
+     * @return InteractionService
+     */
+    public function getInteractionService()
+    {
+        if (!isset($this->services[InteractionService::class])) {
+            $this->services[InteractionService::class] = new InteractionService(
+                new ApiService($this->http_service),
+                $this
+            );
+        }
+        return $this->services[InteractionService::class];
     }
 
     /**

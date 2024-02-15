@@ -8,6 +8,7 @@ use Webmarketer\Api\Project\CustomColumns\CustomColumnService;
 use Webmarketer\Api\Project\Events\EventService;
 use Webmarketer\Api\Project\EventTypes\EventTypeService;
 use Webmarketer\Api\Project\Fields\FieldService;
+use Webmarketer\Api\Project\Interactions\InteractionService;
 use Webmarketer\Api\Project\ProjectService;
 use Webmarketer\Api\Project\TrafficSources\TrafficSourceService;
 use Webmarketer\Api\Project\Users\UserService;
@@ -116,5 +117,11 @@ class WebmarketerSdkTest extends TestCase
     {
         $sdk = new WebmarketerSdk();
         $this->assertInstanceOf(UserService::class, $sdk->getUserService());
+    }
+
+    public function testGetInteractionService()
+    {
+        $sdk = new WebmarketerSdk();
+        $this->assertInstanceOf(InteractionService::class, $sdk->getInteractionService());
     }
 }
