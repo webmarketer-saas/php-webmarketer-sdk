@@ -2,6 +2,7 @@
 
 namespace Webmarketer\Api\Project\Events;
 
+use DateTime;
 use Webmarketer\Api\AbstractApiObject;
 
 class EventPayload extends AbstractApiObject
@@ -45,4 +46,11 @@ class EventPayload extends AbstractApiObject
      * @var array;
      */
     public $data;
+
+    /**
+     * Event date (useful to antedate the event, optional)
+     *
+     * @var DateTime|null
+     */
+    public $eventDate;
 }
