@@ -10,12 +10,12 @@ class AccessTokenResponse
     private $access_token;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $token_type;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $expires_in;
 
@@ -25,15 +25,15 @@ class AccessTokenResponse
     private $refresh_token;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $scope;
 
     /**
      * @param string $access_token
-     * @param string $token_type
-     * @param int $expires_in
-     * @param string $scope
+     * @param string|null $token_type
+     * @param int|null $expires_in
+     * @param string|null $scope
      * @param string|null $refresh_token
      */
     public function __construct($access_token, $token_type, $expires_in, $scope, $refresh_token)
@@ -54,7 +54,7 @@ class AccessTokenResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTokenType()
     {
@@ -62,7 +62,7 @@ class AccessTokenResponse
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getExpiresIn()
     {
@@ -78,7 +78,7 @@ class AccessTokenResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getScope()
     {
