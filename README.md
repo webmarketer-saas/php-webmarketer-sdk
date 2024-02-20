@@ -102,6 +102,10 @@ try {
         ],
         $refresh_token_auth_provider
     );
+    // perform an exchange of the refresh flow to get an access token as well as a new refresh token
+    $response = $client->getAuthProvider()->refreshToken();
+    // new refresh token can be securely stored for future use
+    $new_refresh_token = $response['refresh_token'];
 } catch (\Webmarketer\Exception\DependencyException $dep_ex) {
     // SDK init throw a dependency exception if requirements are not meet (see Install)
 } catch (\Webmarketer\Exception\CredentialException $cred_ex) {
