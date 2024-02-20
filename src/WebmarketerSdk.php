@@ -93,6 +93,16 @@ class WebmarketerSdk
     }
 
     /**
+     * Get sdk instance auth provider
+     *
+     * @return RefreshTokenAuthProvider|ServiceAccountAuthProvider
+     */
+    public function getAuthProvider()
+    {
+        return $this->auth_provider;
+    }
+
+    /**
      * @return JWT
      *
      * @throws Exception
