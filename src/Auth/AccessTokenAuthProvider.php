@@ -31,6 +31,12 @@ class AccessTokenAuthProvider extends AbstractAuthProvider
      */
     protected function negotiateAccessToken()
     {
-        return $this->access_token;
+        return new AccessTokenResponse(
+            $this->access_token,
+            'Bearer',
+            null,
+            null,
+            null
+        );
     }
 }
