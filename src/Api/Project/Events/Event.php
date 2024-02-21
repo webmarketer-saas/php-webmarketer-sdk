@@ -64,6 +64,13 @@ class Event extends AbstractApiObject
     public $expirationPolicy;
 
     /**
+     * Event date
+     *
+     * @var DateTime
+     */
+    public $eventDate;
+
+    /**
      * Event creation date
      *
      * @var DateTime
