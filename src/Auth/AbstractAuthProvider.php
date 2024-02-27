@@ -8,16 +8,20 @@ use Webmarketer\Exception\CredentialException;
 use Webmarketer\Exception\DependencyException;
 use Webmarketer\Exception\EndpointNotFoundException;
 use Webmarketer\Exception\GenericHttpException;
+use Webmarketer\Exception\OauthInvalidToken;
 use Webmarketer\Exception\UnauthorizedException;
 use Webmarketer\HttpService\HttpService;
 
 abstract class AbstractAuthProvider
 {
+    /** @var boolean */
+    const NEED_USER_INTERACTION = false;
+
     /** @var HttpService */
     protected $http_service;
 
-    /** @var JWT | null */
-    private $access_token = null;
+    /** @var AccessTokenResponse | null */
+    private $access_token_response = null;
 
     /**
      * Init
@@ -43,7 +47,7 @@ abstract class AbstractAuthProvider
     abstract protected function internalInit();
 
     /**
-     * @return JWT
+     * @return AccessTokenResponse access token response
      *
      * @throws Exception
      * @throws BadRequestException
@@ -64,9 +68,18 @@ abstract class AbstractAuthProvider
      */
     public function getJwt()
     {
-        if (is_null($this->access_token) || $this->access_token->isExpired()) {
-            $this->access_token = $this->negotiateAccessToken();
+        if (is_null($this->access_token_response)) {
+            $this->access_token_response = $this->negotiateAccessToken();
+            return $this->access_token_response->getAccessToken();
         }
-        return $this->access_token;
+
+        if ($this->access_token_response->getAccessToken()->isExpired()) {
+            if (static::NEED_USER_INTERACTION) {
+                throw new OauthInvalidToken('Access token expired, user interaction needed');
+            }
+            $this->access_token_response = $this->negotiateAccessToken();
+        }
+
+        return $this->access_token_response->getAccessToken();
     }
 }

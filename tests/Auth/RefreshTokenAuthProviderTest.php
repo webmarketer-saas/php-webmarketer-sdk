@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Webmarketer\Auth\JWT;
 use Webmarketer\Auth\RefreshTokenAuthProvider;
 use Webmarketer\Exception\CredentialException;
+use Webmarketer\Exception\OauthInvalidToken;
 use Webmarketer\HttpService\HttpService;
 use Webmarketer\WebmarketerSdk;
 
@@ -47,6 +48,24 @@ class RefreshTokenAuthProviderTest extends TestCase
         new WebmarketerSdk([], $auth_provider);
     }
 
+    public function testThrowErrorWhenRefreshIsNotPerformed()
+    {
+        $this->expectException(OauthInvalidToken::class);
+
+        $test_client_id = 'clientida';
+        $test_client_secret = 'clientseca';
+        $test_refresh_token = 'refreshtokena';
+
+        $http_service_mock = $this->createMock(HttpService::class);
+        $auth_provider = new RefreshTokenAuthProvider([
+            'client_id' => $test_client_id,
+            'client_secret' => $test_client_secret,
+            'refresh_token' => $test_refresh_token
+        ]);
+        $auth_provider->init($http_service_mock);
+        $auth_provider->getJwt();
+    }
+
     public function testTokenNegotiate()
     {
         $test_client_id = 'clientida';
@@ -55,7 +74,11 @@ class RefreshTokenAuthProviderTest extends TestCase
         $test_access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
         $access_token_response_stub = (object) [
             'body' => (object) [
-                'access_token' => $test_access_token
+                'access_token' => $test_access_token,
+                'token_type' => null,
+                'expires_in' => null,
+                'refresh_token' => null,
+                'scope' => null
             ],
             'status_code' => 200
         ];
@@ -88,9 +111,17 @@ class RefreshTokenAuthProviderTest extends TestCase
             'refresh_token' => $test_refresh_token
         ]);
         $auth_provider->init($http_service_mock);
+        $response = $auth_provider->refreshToken();
         $jwt = $auth_provider->getJwt();
 
         $this->assertInstanceOf(JWT::class, $jwt);
         $this->assertEquals($test_access_token, "$jwt");
+        $this->assertEquals($response, [
+            'access_token' => $test_access_token,
+            'token_type' => null,
+            'expires_in' => null,
+            'refresh_token' => null,
+            'scope' => null
+        ]);
     }
 }

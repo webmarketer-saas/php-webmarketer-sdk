@@ -107,7 +107,13 @@ class ServiceAccountAuthProvider extends AbstractAuthProvider
             WebmarketerSdk::getBaseOauthPath()
         );
 
-        return new JWT($response->body->access_token);
+        return new AccessTokenResponse(
+            $response->body->access_token,
+            $response->body->token_type,
+            $response->body->expires_in,
+            $response->body->scope,
+            null
+        );
     }
 
     /**

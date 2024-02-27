@@ -2,11 +2,18 @@
 
 namespace Webmarketer\Auth;
 
+use Webmarketer\Exception\BadRequestException;
 use Webmarketer\Exception\CredentialException;
+use Webmarketer\Exception\EndpointNotFoundException;
+use Webmarketer\Exception\GenericHttpException;
+use Webmarketer\Exception\OauthInvalidToken;
+use Webmarketer\Exception\UnauthorizedException;
 use Webmarketer\WebmarketerSdk;
 
 class RefreshTokenAuthProvider extends AbstractAuthProvider
 {
+    const NEED_USER_INTERACTION = true;
+
     /** @var string */
     private $client_id;
 
@@ -15,6 +22,9 @@ class RefreshTokenAuthProvider extends AbstractAuthProvider
 
     /** @var string */
     private $refresh_token;
+
+    /** @var AccessTokenResponse | null */
+    private $refresh_token_response = null;
 
     /**
      * Construct an instance of the refresh token based auth
@@ -35,20 +45,18 @@ class RefreshTokenAuthProvider extends AbstractAuthProvider
         $this->refresh_token = $args['refresh_token'];
     }
 
-    protected function internalInit()
-    {
-        if (!$this->refresh_token) {
-            throw new CredentialException('Credential invalid, refresh token malformed');
-        }
-        if (!$this->client_secret) {
-            throw new CredentialException('Credential invalid, client secret malformed');
-        }
-        if (!$this->client_id) {
-            throw new CredentialException('Credential invalid, client id malformed');
-        }
-    }
-
-    protected function negotiateAccessToken()
+    /**
+     * Perform the refresh token flow with the provider credentials
+     * /!\ refresh_token flow can provide a new refresh_token in response that should be stored on your side
+     *
+     * @return array
+     *
+     * @throws BadRequestException
+     * @throws EndpointNotFoundException
+     * @throws GenericHttpException
+     * @throws UnauthorizedException
+     */
+    public function refreshToken()
     {
         $response = $this->http_service->sendRequest(
             'POST',
@@ -66,6 +74,36 @@ class RefreshTokenAuthProvider extends AbstractAuthProvider
             WebmarketerSdk::getBaseOauthPath()
         );
 
-        return new JWT($response->body->access_token);
+        $access_token_response = new AccessTokenResponse(
+            $response->body->access_token,
+            $response->body->token_type,
+            $response->body->expires_in,
+            $response->body->scope,
+            $response->body->refresh_token
+        );
+
+        $this->refresh_token_response = $access_token_response;
+        return $access_token_response->getRaw();
+    }
+
+    protected function internalInit()
+    {
+        if (!$this->refresh_token) {
+            throw new CredentialException('Credential invalid, refresh token malformed');
+        }
+        if (!$this->client_secret) {
+            throw new CredentialException('Credential invalid, client secret malformed');
+        }
+        if (!$this->client_id) {
+            throw new CredentialException('Credential invalid, client id malformed');
+        }
+    }
+
+    protected function negotiateAccessToken()
+    {
+        if (is_null($this->refresh_token_response)) {
+            throw new OauthInvalidToken('Refresh token must be exchanged for an access token before use, ensure to call refreshToken method first');
+        }
+        return $this->refresh_token_response;
     }
 }
