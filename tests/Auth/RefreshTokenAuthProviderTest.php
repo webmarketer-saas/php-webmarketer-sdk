@@ -74,7 +74,11 @@ class RefreshTokenAuthProviderTest extends TestCase
         $test_access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
         $access_token_response_stub = (object) [
             'body' => (object) [
-                'access_token' => $test_access_token
+                'access_token' => $test_access_token,
+                'token_type' => null,
+                'expires_in' => null,
+                'refresh_token' => null,
+                'scope' => null
             ],
             'status_code' => 200
         ];
