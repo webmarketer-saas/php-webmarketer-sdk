@@ -115,37 +115,9 @@ try {
 ```
 
 ### Official integrations
-Following integrations are developed and maintained by the Webmarketer Team himself and are based on this SDK.
+Following integrations are developed and maintained by the Webmarketer Team and are based on this SDK.
 * [WordPress Plugin](https://github.com/webmarketer-saas/wp-webmarketer)
-
-## Contributing
-All SDK dependencies are managed via Composer :
-```bash
-composer install
-```
-Run all tests with PHPUnit and the configuration provided :
-```bash
-composer tests
-```
-Run all tests and check codecoverage (must be >= 80%) with PHPUnit :
-```bash
-composer tests-coverage
-```
-Lint code :
-```bash
-composer phpcs
-```
-
-### Docker
-If you want to run the SDK in a container, it comes with some Docker configuration :
-* Dockerfile (Linux Alpine with PHP 5.6 and composer)
-* Dockerfile-8 (Linux Alpine with PHP 8.0.10 and composer)
-* docker-compose.yml with a service **PHP** to run commands with desired image (5.6 or 8.0.10). Update the used Dockerfile between the two to run with 5.6 or 8.0.10  
-  ```bash
-  docker-compose run php composer tests
-  ```
----
-Feel free to report issues and bugs directly on this repository.
+* [Prestashop Module](https://github.com/webmarketer-saas/prestashop-webmarketer)
 
 ## Resources
 * [App](https://app.webmarketer.io)
