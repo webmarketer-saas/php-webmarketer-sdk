@@ -26,6 +26,19 @@ class EventService extends ServiceWrapper
 
     /**
      * @param string $event_id
+     * @param array $config call specific SDK configuration
+     * @return Event
+     *
+     * @throws Exception
+     */
+    public function getById($event_id, $config = [])
+    {
+        $project_id = $this->getProjectId($config);
+        return $this->api_service->get("projects/$project_id/events/$event_id");
+    }
+
+    /**
+     * @param string $event_id
      * @param string $storage_key storage_key of the field to update
      * @param number $value new value of the boolean state
      * @param DateTime | null $date optionally provide a date to antedate value update
