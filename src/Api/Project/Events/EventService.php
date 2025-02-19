@@ -25,6 +25,19 @@ class EventService extends ServiceWrapper
     }
 
     /**
+     * @param EventPayload $event
+     * @param array $config call specific SDK configuration
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function createSync($event, $config = [])
+    {
+        $event->projectId = $this->getProjectId($config);
+        return $this->api_service->post("events/sync", $event);
+    }
+
+    /**
      * @param string $event_id
      * @param string $storage_key storage_key of the field to update
      * @param number $value new value of the boolean state
